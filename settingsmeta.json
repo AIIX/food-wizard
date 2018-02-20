@@ -1,0 +1,28 @@
+{
+    "name": "food-wizard",
+    "skillMetadata": {
+        "sections": [
+            {
+                "name": "Edamam Recipe Search API",
+                "fields": [
+                    {
+                        "type": "label",
+                        "label": "Food Wizard utilizes Edamam as the recipes provider, for your free API key registeration visit <a href='https://developer.edamam.com/'>https://developer.edamam.com</a><br></br>"
+                    },
+                    {
+                        "name": "app_id",
+                        "type": "text",
+                        "label": "APP ID",
+                        "value": "0ff6f190"
+                    },
+                    {
+                        "name": "app_key",
+                        "type": "text",
+                        "label": "APP KEY",
+                        "value": "fbc1abd60a50e31d91cc41aeaaa0f23c"
+                    }
+                ]
+            }
+        ]
+    }
+} 

@@ -1,0 +1,7 @@
+{
+  "utterance": "search recipe",
+  "intent_type": "RecipeByKeys",
+  "intent": {
+    "RecipeKeyword": "containing"
+  }
+}
