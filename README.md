@@ -8,12 +8,15 @@ Get popular recipes and how to cook directions based on combination of Ingredien
 #### Note: This Mycroft Skill Requires The Mycroft Plasmoid for Desktop / Plasma-Mobile To Display Results
 
 ##### To-Do: 
-* Select Recipe & Speak Out Ingredients
 * Get More Recipes
 
 ## Examples 
 * "Hey Mycroft recipes with chicken, honey and lemon"
 * "Hey Mycroft search for recipes with ..."
+
+### Example "Read Recipe Once Results Are Displayed:"
+##### Note: "Hey Mycroft read recipe %recipetitle" - Complete Displayed Recipe Title
+* "Hey Mycroft read recipe mexican chicken lime soup sola di"
 
 ## Credits 
 Aix (aix.m@outlook.com)

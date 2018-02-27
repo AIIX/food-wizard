@@ -3,6 +3,8 @@ import sys
 import subprocess
 import json
 import requests
+import unidecode
+import dbus
 from adapt.intent import IntentBuilder
 from os.path import join, dirname
 from string import Template
@@ -45,6 +47,23 @@ class FoodWizardSkill(MycroftSkill):
         self.speak(resultSpeak)
         self.enclosure.ws.emit(Message("recipesObject", {'desktop': {'data': response.text}}))
         
+    @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
+    @adds_context('ReadRecipeContext')        
+    def handle_read_recipe_method_intent(self, message):
+        utterance = message.data.get('utterance').lower()
+        utterance = utterance.replace(message.data.get('ReadRecipeKeyword'), '')
+        foodTitle = utterance.encode('utf-8').lstrip(' ')
+        LOGGER.info(foodTitle)
+        for recipes in globalObject['hits']:
+            rtitlelist = recipes['recipe']['label']
+            rfilteredtlist = rtitlelist.lower()
+            decodeString = unidecode.unidecode(rfilteredtlist)
+            rfilteredtlistnospecial = re.sub('\W+',' ', decodeString)
+            if foodTitle in rfilteredtlistnospecial:
+                    getRecipeMethod = recipes['recipe']['ingredientLines']
+                    ingredients = json.dumps(getRecipeMethod)
+                    self.speak(ingredients)
+    
     def stop(self):
         pass
     

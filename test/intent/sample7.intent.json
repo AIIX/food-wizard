@@ -1,0 +1,7 @@
+{
+  "utterance": "read me",
+  "intent_type": "ReadRecipeMethod",
+  "intent": {
+    "ReadRecipeKeyword": "the recipe for"
+  }
+}
