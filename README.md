@@ -7,11 +7,11 @@ Get popular recipes and how to cook directions based on combination of Ingredien
 #### Note: This Mycroft Skill Requires The Mycroft Plasmoid for Plasma Desktop / Plasma-Mobile To Display Results
 
 ##### To-Do: 
-* Get More Recipes
+* Get More Recipes: Implement "Hey Mycroft Get More Recipes" 
+* Add Specific Search Categories like Soup, Fried, Semi-Fried, Roasted, Etc
 
 ## Examples 
-* "Hey Mycroft recipes with chicken, honey and lemon"
-* "Hey Mycroft search for recipes with ..."
+* "Hey Mycroft show recipes with chicken, honey and lemon"
 
 ### Example "Read Recipe Once Results Are Displayed:"
 ##### Note: "Hey Mycroft read recipe %recipetitle" - Complete Displayed Recipe Title
