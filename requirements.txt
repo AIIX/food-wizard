@@ -1,0 +1,2 @@
+unidecode
+dbus-python
