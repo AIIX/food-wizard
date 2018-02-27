@@ -53,7 +53,7 @@ class FoodWizardSkill(MycroftSkill):
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('ReadRecipeKeyword'), '')
         foodTitle = utterance.encode('utf-8').lstrip(' ')
-        LOGGER.info(foodTitle)
+
         for recipes in globalObject['hits']:
             rtitlelist = recipes['recipe']['label']
             rfilteredtlist = rtitlelist.lower()
@@ -63,6 +63,9 @@ class FoodWizardSkill(MycroftSkill):
                     getRecipeMethod = recipes['recipe']['ingredientLines']
                     ingredients = json.dumps(getRecipeMethod)
                     self.speak(ingredients)
+                    bus = dbus.SessionBus()
+                    remote_object = bus.get_object("org.kde.mycroftapplet", "/mycroftapplet")
+                    remote_object.showRecipeMethod(foodTitle, dbus_interface="org.kde.mycroftapplet")
     
     def stop(self):
         pass
