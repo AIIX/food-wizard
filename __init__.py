@@ -25,7 +25,6 @@ class FoodWizardSkill(MycroftSkill):
         self.app_key = self.settings['app_key']
 
     @intent_handler(IntentBuilder("RecipeByKeys").require("RecipeKeyword").build())
-    @adds_context('GetRecipeContext')
     def handle_search_recipe_by_keys_intent(self, message):
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('RecipeKeyword'), '')
@@ -47,8 +46,7 @@ class FoodWizardSkill(MycroftSkill):
         self.speak(resultSpeak)
         self.enclosure.ws.emit(Message("recipesObject", {'desktop': {'data': response.text}}))
         
-    @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
-    @adds_context('ReadRecipeContext')        
+    @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())  
     def handle_read_recipe_method_intent(self, message):
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('ReadRecipeKeyword'), '')
