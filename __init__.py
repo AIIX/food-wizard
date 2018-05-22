@@ -1,3 +1,6 @@
+"""
+FoodWizard Mycroft Skill.
+"""
 import re
 import sys
 import subprocess
@@ -14,18 +17,25 @@ from mycroft.util import read_stripped_lines
 from mycroft.util.log import getLogger
 from mycroft.messagebus.message import Message
 
-__author__ = 'Aix'
+__author__ = 'aix'
 
 LOGGER = getLogger(__name__)
 
+
 class FoodWizardSkill(MycroftSkill):
     def __init__(self):
+        """
+        FoodWizard Skill Class.
+        """    
         super(FoodWizardSkill, self).__init__(name="FoodWizardSkill")
         self.app_id = self.settings['app_id']
         self.app_key = self.settings['app_key']
 
     @intent_handler(IntentBuilder("RecipeByKeys").require("RecipeKeyword").build())
     def handle_search_recipe_by_keys_intent(self, message):
+        """
+        Search Recipes By Keywords
+        """    
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('RecipeKeyword'), '')
         searchString = utterance.encode('utf-8')
@@ -46,8 +56,11 @@ class FoodWizardSkill(MycroftSkill):
         self.speak(resultSpeak)
         self.enclosure.ws.emit(Message("recipesObject", {'desktop': {'data': response.text}}))
         
-    @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())  
+    @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
     def handle_read_recipe_method_intent(self, message):
+        """
+        Read Recipes By Keywords
+        """
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('ReadRecipeKeyword'), '')
         foodTitle = utterance.encode('utf-8').lstrip(' ')
@@ -66,7 +79,13 @@ class FoodWizardSkill(MycroftSkill):
                     remote_object.showRecipeMethod(foodTitle, dbus_interface="org.kde.mycroftapplet")
     
     def stop(self):
+        """
+        Mycroft Stop Function
+        """
         pass
     
 def create_skill():
+    """
+    Mycroft Create Skill Function
+    """
     return FoodWizardSkill()
