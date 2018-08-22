@@ -54,7 +54,7 @@ class FoodWizardSkill(MycroftSkill):
         resultCount = len(globalObject['hits'])
         resultSpeak = "Found {0} recipe's".format(resultCount)
         self.speak(resultSpeak)
-        self.enclosure.ws.emit(Message("recipesObject", {'desktop': {'data': response.text}}))
+        self.enclosure.bus.emit(Message("recipesObject", {'desktop': {'data': response.text}}))
         
     @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
     def handle_read_recipe_method_intent(self, message):
