@@ -38,7 +38,7 @@ class FoodWizardSkill(MycroftSkill):
         """    
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('RecipeKeyword'), '')
-        searchString = utterance
+        searchString = utterance.encode('utf-8')
         
         method = "GET"
         url = "https://api.edamam.com/search"
@@ -52,17 +52,9 @@ class FoodWizardSkill(MycroftSkill):
         global globalObject
         globalObject = response.json()
         resultCount = len(globalObject['hits'])
-        recipeTitle = globalObject['hits'][0]['recipe']['label']
-        recipeHealthTag = globalObject['hits'][0]['recipe']['healthLabels'][0]
-        recipeCalories = globalObject['hits'][0]['recipe']['calories']
-        recipeImage = globalObject['hits'][0]['recipe']['image']
-        recipeDietType = globalObject['hits'][0]['recipe']['dietLabels'][0]
-        recipeIngredients = globalObject['hits'][0]['recipe']['ingredientLines']
-        recipeIngredientArray = {"ingredients": recipeIngredients}
-        recipeSource = globalObject['hits'][0]['recipe']['source']
-        resultSpeak = "Found {0} with {1} calories".format(recipeTitle, recipeCalories)
+        resultSpeak = "Found {0} recipe's".format(resultCount)
         self.speak(resultSpeak)
-        self.enclosure.bus.emit(Message("metadata", {"type": "recipe", "recipeTitle": recipeTitle, "recipeHealthTag": recipeHealthTag, "recipeCalories": recipeCalories, "recipeImage": recipeImage, "recipeDietType": recipeDietType, "recipeIngredients": recipeIngredientArray, "recipeSource": recipeSource}))
+        self.enclosure.bus.emit(Message("recipesObject", {'desktop': {'data': response.text}}))
         
     @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
     def handle_read_recipe_method_intent(self, message):
@@ -71,7 +63,7 @@ class FoodWizardSkill(MycroftSkill):
         """
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('ReadRecipeKeyword'), '')
-        foodTitle = utterance.lstrip(' ')
+        foodTitle = utterance.encode('utf-8').lstrip(' ')
 
         for recipes in globalObject['hits']:
             rtitlelist = recipes['recipe']['label']
