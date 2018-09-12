@@ -12,7 +12,7 @@ Mycroft.DelegateBase {
     //property alias recipeDietType: contentDietType.text
     //property alias recipeHealthTag: contentHealthTag.text
     //property alias recipeSource: contentSource.text
-    //property var recipeIngredients 
+    //property var recipeIngredients
     property var recipeBlob: JSON.parse(recipeLayout.model)
     property var recipeModel: recipeBlob.hits
     property var uiWidth: parent.width
@@ -23,14 +23,14 @@ Mycroft.DelegateBase {
         color: "#00222222"
         anchors.fill: parent
 
-    GridLayout { //maybe a flickable in case there's too much text instead of Eliding (Flickable delegate base?)
-        id: uiGridView
-        anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
-        columns: width > 800 ? 2 : 1
-        flow: width > 800 ? GridLayout.LeftToRight : GridLayout.TopToBottom
-        rows: recipeLayout.count
-                
+        GridLayout { //maybe a flickable in case there's too much text instead of Eliding (Flickable delegate base?)
+            id: uiGridView
+            anchors.fill: parent
+            anchors.margins: Kirigami.Units.largeSpacing
+            columns: width > 800 ? 2 : 1
+            flow: width > 800 ? GridLayout.LeftToRight : GridLayout.TopToBottom
+            rows: recipeLayout.count
+
             Repeater {
                 id: recipeLayout
                 model: recipeModel
@@ -53,18 +53,18 @@ Mycroft.DelegateBase {
                         text: modelData.recipe.label
                         wrapMode: Text.WordWrap
                         elide: Text.ElideRight
-                        }
+                    }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
                             var sendReadRecipe = "read recipe " + recipeFrontLabel.text.replace(/[^A-Z0-9]+/ig, "");
                             console.log(sendReadRecipe)
                             Mycroft.MycroftController.sendText(sendReadRecipe)
-                            }
                         }
                     }
                 }
             }
         }
     }
+}
 

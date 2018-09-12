@@ -12,7 +12,7 @@ Mycroft.DelegateBase {
     property alias recipeDietType: contentDietType.text
     property alias recipeHealthTag: contentHealthTag.text
     property alias recipeSource: contentSource.text
-    property var recipeIngredients 
+    property var recipeIngredients
     
     backgroundImage: img.source
 
@@ -57,7 +57,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                        text: "Source:"
+                    text: "Source:"
                 }
 
                 Label {
@@ -66,7 +66,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                    }
+                }
 
             }
 
@@ -80,7 +80,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                        text: "Calories:"
+                    text: "Calories:"
                 }
 
                 Label {
@@ -89,7 +89,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                    }
+                }
 
             }
 
@@ -103,7 +103,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                        text: "Diet Type:"
+                    text: "Diet Type:"
                 }
 
                 Label {
@@ -112,7 +112,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                    }
+                }
 
             }
 
@@ -126,7 +126,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                        text: "Health Tags:"
+                    text: "Health Tags:"
                 }
 
 
@@ -136,7 +136,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
-                    }
+                }
             }
         }
 
@@ -153,7 +153,7 @@ Mycroft.DelegateBase {
                     Layout.fillWidth: true
                     //text: modelData.title
                     wrapMode: Text.WordWrap
-                        text: "Ingredients:"
+                    text: "Ingredients:"
                 }
 
                 ListView {
@@ -165,7 +165,7 @@ Mycroft.DelegateBase {
                         Layout.fillWidth: true
                         wrapMode: Text.WordWrap
                         elide: Text.ElideRight
-                                text: modelData
+                        text: modelData
                     }
                     model: recipeIngredients.ingredients
                 }
