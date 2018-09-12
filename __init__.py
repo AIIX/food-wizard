@@ -52,18 +52,10 @@ class FoodWizardSkill(MycroftSkill):
         global globalObject
         globalObject = response.json()
         resultCount = len(globalObject['hits'])
-        recipeTitle = globalObject['hits'][0]['recipe']['label']
-        recipeHealthTag = globalObject['hits'][0]['recipe']['healthLabels'][0]
-        recipeCalories = globalObject['hits'][0]['recipe']['calories']
-        recipeImage = globalObject['hits'][0]['recipe']['image']
-        recipeDietType = globalObject['hits'][0]['recipe']['dietLabels'][0]
-        recipeIngredients = globalObject['hits'][0]['recipe']['ingredientLines']
-        recipeIngredientArray = {"ingredients": recipeIngredients}
-        recipeSource = globalObject['hits'][0]['recipe']['source']
-        resultSpeak = "Found {0} with {1} calories".format(recipeTitle, recipeCalories)
+        resultSpeak = "Found {0} recipes".format(resultCount)
+        self.enclosure.bus.emit(Message("metadata", {"type": "food-wizard", "recipeBlob": globalObject, "pageStay": True}))
         self.speak(resultSpeak)
-        self.enclosure.bus.emit(Message("metadata", {"type": "recipe", "recipeTitle": recipeTitle, "recipeHealthTag": recipeHealthTag, "recipeCalories": recipeCalories, "recipeImage": recipeImage, "recipeDietType": recipeDietType, "recipeIngredients": recipeIngredientArray, "recipeSource": recipeSource}))
-        
+                
     @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
     def handle_read_recipe_method_intent(self, message):
         """
@@ -71,21 +63,23 @@ class FoodWizardSkill(MycroftSkill):
         """
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('ReadRecipeKeyword'), '')
-        foodTitle = utterance.lstrip(' ')
-
-        for recipes in globalObject['hits']:
-            rtitlelist = recipes['recipe']['label']
-            rfilteredtlist = rtitlelist.lower()
-            decodeString = unidecode.unidecode(rfilteredtlist)
-            rfilteredtlistnospecial = re.sub('\W+',' ', decodeString)
-            if foodTitle in rfilteredtlistnospecial:
-                    getRecipeMethod = recipes['recipe']['ingredientLines']
-                    ingredients = json.dumps(getRecipeMethod)
-                    self.speak(ingredients)
-                    bus = dbus.SessionBus()
-                    remote_object = bus.get_object("org.kde.mycroftapplet", "/mycroftapplet")
-                    remote_object.showRecipeMethod(foodTitle, dbus_interface="org.kde.mycroftapplet")
-    
+        foodTitle = utterance.replace(" ", "").lower()
+        self.speak(foodTitle)
+        for x in globalObject['hits']:
+            mapLabel = x['recipe']['label'].replace("-", "").replace(" ", "").lower()
+            if mapLabel == foodTitle:
+                recipeTitle = x['recipe']['label']
+                recipeHealthTag = x['recipe']['healthLabels']
+                recipeHealthTagArray = {"healthTags": recipeHealthTag}
+                recipeCalories = x['recipe']['calories']
+                recipeImage = x['recipe']['image']
+                recipeDietType = x['recipe']['dietLabels']
+                recipeDietTypeArray = {"dietTags": recipeDietType}
+                recipeIngredients = x['recipe']['ingredientLines']
+                recipeIngredientArray = {"ingredients": recipeIngredients}
+                recipeSource = x['recipe']['source']
+                self.enclosure.bus.emit(Message("metadata", {"type": "food-wizard/showrecipe", "recipeTitle": recipeTitle, "recipeHealthTag": recipeHealthTagArray, "recipeCalories": recipeCalories, "recipeImage": recipeImage, "recipeDietType": recipeDietTypeArray, "recipeIngredients": recipeIngredientArray, "recipeSource": recipeSource}))
+        
     def stop(self):
         """
         Mycroft Stop Function

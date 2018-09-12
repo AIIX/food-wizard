@@ -6,176 +6,65 @@ import org.kde.kirigami 2.4 as Kirigami
 import Mycroft 1.0 as Mycroft
 
 Mycroft.DelegateBase {
-    property alias recipeTitle: title.text
-    property alias recipeImage: img.source
-    property alias recipeCalories: contentCalorie.text
-    property alias recipeDietType: contentDietType.text
-    property alias recipeHealthTag: contentHealthTag.text
-    property alias recipeSource: contentSource.text
-    property var recipeIngredients 
-    
-    backgroundImage: img.source
+    //property alias recipeTitle: title.text
+    //property alias recipeImage: img.source
+    //property alias recipeCalories: contentCalorie.text
+    //property alias recipeDietType: contentDietType.text
+    //property alias recipeHealthTag: contentHealthTag.text
+    //property alias recipeSource: contentSource.text
+    //property var recipeIngredients 
+    property var recipeBlob: JSON.parse(recipeLayout.model)
+    property var recipeModel: recipeBlob.hits
+    property var uiWidth: parent.width
+    backgroundImage: "https://source.unsplash.com/1920x1080/?+food"
 
-    Component.onCompleted: {
-        console.log(JSON.stringify(recipeIngredients))
-    }
+    Rectangle {
+        id: backgroundRect
+        color: "#00222222"
+        anchors.fill: parent
 
     GridLayout { //maybe a flickable in case there's too much text instead of Eliding (Flickable delegate base?)
+        id: uiGridView
         anchors.fill: parent
         anchors.margins: Kirigami.Units.largeSpacing
-        columns: 2
-        Item {
-            Layout.fillHeight: true
-            Layout.columnSpan: 2
-        }
-        
-        Image {
-            id: img
-            fillMode: Image.PreserveAspectCrop
-            Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-            Layout.preferredHeight: Kirigami.Units.gridUnit * 4
-        }
-
-        ColumnLayout {
-            Layout.fillWidth: true
-            Kirigami.Heading {
-                id: title
-                level: 1
-                Layout.fillWidth: true
-                //text: modelData.title
-                wrapMode: Text.WordWrap
-            }
-
-
-            Row {
-                Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentSourceLabel
-                    Layout.columnSpan: 2
+        columns: width > 800 ? 2 : 1
+        flow: width > 800 ? GridLayout.LeftToRight : GridLayout.TopToBottom
+        rows: recipeLayout.count
+                
+            Repeater {
+                id: recipeLayout
+                model: recipeModel
+                
+                RowLayout {
                     Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                        text: "Source:"
-                }
-
-                Label {
-                    id: contentSource
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
+                    Layout.fillHeight: true
+                    
+                    Image {
+                        id: recipeFrontImage
+                        fillMode: Image.PreserveAspectCrop
+                        source: modelData.recipe.image
+                        Layout.preferredWidth: uiGridView.width > 800 ? Kirigami.Units.gridUnit * 4 : Kirigami.Units.gridUnit * 2
+                        Layout.preferredHeight: uiGridView.width > 800 ? Kirigami.Units.gridUnit * 4 : Kirigami.Units.gridUnit * 2
                     }
-
-            }
-
-            Row {
-                Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentCalorieLabel
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                        text: "Calories:"
-                }
-
-                Label {
-                    id: contentCalorie
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    }
-
-            }
-
-            Row {
-                Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentDietTypeLabel
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                        text: "Diet Type:"
-                }
-
-                Label {
-                    id: contentDietType
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    }
-
-            }
-
-            Row {
-                Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentHealthTagLabel
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                        text: "Health Tags:"
-                }
-
-
-                Label {
-                    id: contentHealthTag
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    }
-            }
-        }
-
-        Item {
-            Layout.fillWidth: true
-            Layout.columnSpan: 2
-
-            ColumnLayout{
-                Layout.fillWidth: true
-
-                Kirigami.Heading {
-                    id: ingredientsLabel
-                    level: 1
-                    Layout.fillWidth: true
-                    //text: modelData.title
-                    wrapMode: Text.WordWrap
-                        text: "Ingredients:"
-                }
-
-                ListView {
-                    id: ingredientsList
-                    Layout.fillWidth: true
-                    implicitHeight: 200
-                    delegate: Label {
-                        Layout.columnSpan: 2
+                    Label {
+                        id: recipeFrontLabel
+                        anchors.verticalCenter: recipeFrontImage.verticalCenter
                         Layout.fillWidth: true
+                        text: modelData.recipe.label
                         wrapMode: Text.WordWrap
                         elide: Text.ElideRight
-                                text: modelData
+                        }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            var sendReadRecipe = "read recipe " + recipeFrontLabel.text.replace(/[^A-Z0-9]+/ig, "");
+                            console.log(sendReadRecipe)
+                            Mycroft.MycroftController.sendText(sendReadRecipe)
+                            }
+                        }
                     }
-                    model: recipeIngredients.ingredients
                 }
             }
         }
-
-        Item {
-            Layout.columnSpan: 2
-            Layout.fillHeight: true
-        }
     }
-}
 
