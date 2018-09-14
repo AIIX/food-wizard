@@ -2,7 +2,6 @@ Main
 {
     width: 400
     height: 400
-    type: "food-wizard/showrecipe" 
     recipeTitle: "Chicken Honey & Lime"
     recipeHealthTag: {"healthTags": ['diet, low-cal']} 
     recipeCalories: "30000"
