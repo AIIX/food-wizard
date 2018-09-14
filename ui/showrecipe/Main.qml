@@ -5,7 +5,7 @@ import org.kde.kirigami 2.4 as Kirigami
 
 import Mycroft 1.0 as Mycroft
 
-Mycroft.DelegateBase {
+Mycroft.PaginationBase {
     property alias recipeTitle: title.text
     property alias recipeImage: img.source
     property alias recipeCalories: contentCalorie.text
@@ -13,16 +13,6 @@ Mycroft.DelegateBase {
     property var recipeIngredients
     property var recipeDietType
     property var recipeHealthTag
-    
-    backgroundImage: img.source
-
-    Component.onCompleted: {
-        console.log(JSON.stringify(recipeIngredients))
-    }
-
-    Mycroft.PaginationBase {
-        anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
 
         GridLayout {
             Layout.fillHeight: true
@@ -140,7 +130,7 @@ Mycroft.DelegateBase {
                             Layout.fillWidth: true
                             wrapMode: Text.WordWrap
                             elide: Text.ElideRight
-                            text: recipeHealthTag.healthTags
+                            //text: recipeHealthTag.healthTags
                         }
                     }
                 }
@@ -179,5 +169,4 @@ Mycroft.DelegateBase {
             }
         }
     }
-}
 
