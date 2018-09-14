@@ -9,10 +9,10 @@ Mycroft.DelegateBase {
     property alias recipeTitle: title.text
     property alias recipeImage: img.source
     property alias recipeCalories: contentCalorie.text
-    property alias recipeDietType: contentDietType.text
-    property alias recipeHealthTag: contentHealthTag.text
     property alias recipeSource: contentSource.text
     property var recipeIngredients
+    property var recipeDietType
+    property var recipeHealthTag
     
     backgroundImage: img.source
 
@@ -20,129 +20,137 @@ Mycroft.DelegateBase {
         console.log(JSON.stringify(recipeIngredients))
     }
 
-    GridLayout { //maybe a flickable in case there's too much text instead of Eliding (Flickable delegate base?)
+    Mycroft.PaginationBase {
         anchors.fill: parent
         anchors.margins: Kirigami.Units.largeSpacing
-        columns: 2
-        Item {
+
+        GridLayout {
             Layout.fillHeight: true
-            Layout.columnSpan: 2
-        }
-        
-        Image {
-            id: img
-            fillMode: Image.PreserveAspectCrop
-            Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-            Layout.preferredHeight: Kirigami.Units.gridUnit * 4
-        }
-
-        ColumnLayout {
             Layout.fillWidth: true
-            Kirigami.Heading {
-                id: title
-                level: 1
-                Layout.fillWidth: true
-                //text: modelData.title
-                wrapMode: Text.WordWrap
+            columns: 2
+
+            Image {
+                id: img
+                fillMode: Image.PreserveAspectCrop
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+                Layout.preferredHeight: Kirigami.Units.gridUnit * 4
             }
 
-
-            Row {
+            ColumnLayout {
                 Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentSourceLabel
-                    Layout.columnSpan: 2
+                Kirigami.Heading {
+                    id: title
+                    level: 1
                     Layout.fillWidth: true
+                    //text: modelData.title
                     wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    text: "Source:"
-                }
-
-                Label {
-                    id: contentSource
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                }
-
-            }
-
-            Row {
-                Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentCalorieLabel
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    text: "Calories:"
-                }
-
-                Label {
-                    id: contentCalorie
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                }
-
-            }
-
-            Row {
-                Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentDietTypeLabel
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    text: "Diet Type:"
-                }
-
-                Label {
-                    id: contentDietType
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                }
-
-            }
-
-            Row {
-                Layout.fillWidth: true
-                spacing: 5
-
-                Label {
-                    id: contentHealthTagLabel
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
-                    text: "Health Tags:"
                 }
 
 
-                Label {
-                    id: contentHealthTag
-                    Layout.columnSpan: 2
+                Row {
                     Layout.fillWidth: true
-                    wrapMode: Text.WordWrap
-                    elide: Text.ElideRight
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Label {
+                        id: contentSourceLabel
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
+                        elide: Text.ElideRight
+                        text: "Source:"
+                    }
+
+                    Label {
+                        id: contentSource
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
+                        elide: Text.ElideRight
+                    }
+
+                }
+
+                Row {
+                    Layout.fillWidth: true
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Label {
+                        id: contentCalorieLabel
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
+                        elide: Text.ElideRight
+                        text: "Calories:"
+                    }
+
+                    Label {
+                        id: contentCalorie
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
+                        elide: Text.ElideRight
+                    }
+
+                }
+
+                Row {
+                    Layout.fillWidth: true
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Label {
+                        id: contentDietTypeLabel
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
+                        elide: Text.ElideRight
+                        text: "Diet Type:"
+                    }
+
+                    Repeater {
+                        id: contentDietTypeLv
+                        model: recipeDietType.dietTags
+                        Label {
+                            Layout.columnSpan: 2
+                            Layout.fillWidth: true
+                            wrapMode: Text.WordWrap
+                            elide: Text.ElideRight
+                            text: modelData
+                        }
+                    }
+                }
+
+                Row {
+                    Layout.fillWidth: true
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Label {
+                        id: contentHealthTagLabel
+                        Layout.columnSpan: 2
+                        Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
+                        elide: Text.ElideRight
+                        text: "Health Tags:"
+                    }
+
+                    Repeater {
+                        id: contentHealthTag
+                        model: recipeHealthTag.healthTags
+                        Label {
+                            Layout.columnSpan: 2
+                            Layout.fillWidth: true
+                            wrapMode: Text.WordWrap
+                            elide: Text.ElideRight
+                            text: recipeHealthTag.healthTags
+                        }
+                    }
                 }
             }
         }
 
         Item {
             Layout.fillWidth: true
-            Layout.columnSpan: 2
+            Layout.fillHeight: true
+            //Layout.columnSpan: 2
 
             ColumnLayout{
                 Layout.fillWidth: true
@@ -151,7 +159,6 @@ Mycroft.DelegateBase {
                     id: ingredientsLabel
                     level: 1
                     Layout.fillWidth: true
-                    //text: modelData.title
                     wrapMode: Text.WordWrap
                     text: "Ingredients:"
                 }
@@ -170,11 +177,6 @@ Mycroft.DelegateBase {
                     model: recipeIngredients.ingredients
                 }
             }
-        }
-
-        Item {
-            Layout.columnSpan: 2
-            Layout.fillHeight: true
         }
     }
 }
