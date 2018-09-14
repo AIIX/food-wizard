@@ -1,0 +1,16 @@
+Main
+{
+    width: 400
+    height: 400
+    recipeTitle: "Chicken Honey & Lime"
+    recipeHealthTag: {"healthTags": ['diet, low-cal']} 
+    recipeCalories: "30000"
+    recipeImage: "https://source.unsplash.com/1920x1080/?+food" 
+<<<<<<< HEAD
+    recipeDietType: {"dietTags": ["Low Cal, hight greens"]} 
+=======
+    recipeDietType: "Low Cal, hight greens" 
+>>>>>>> fca303ece48bbbd1af2bbf2af18042033b96d24b
+    recipeIngredients: {"ingredients": ['1/2 cup chicken', '1/2 cup lime', '1/2 cup honey']}
+    recipeSource: "aiix"
+}
