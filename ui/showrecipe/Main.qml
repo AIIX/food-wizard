@@ -13,7 +13,8 @@ Mycroft.DelegateBase {
     property var recipeIngredients
     property var recipeDietType
     property var recipeHealthTag
-    
+    graceTime: 30000
+
     backgroundImage: img.source
 
     Component.onCompleted: {

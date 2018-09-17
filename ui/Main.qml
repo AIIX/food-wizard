@@ -10,6 +10,7 @@ Mycroft.DelegateBase {
     property var recipeModel: recipeBlob.hits
     property int uiWidth: parent.width
     backgroundImage: "https://source.unsplash.com/1920x1080/?+food"
+    graceTime: 30000
 
     Kirigami.CardsGridView {
         id: uiGridView
