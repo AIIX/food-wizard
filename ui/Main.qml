@@ -25,7 +25,9 @@ Mycroft.DelegateBase {
             id: card
             banner {
                 title: modelData.recipe.label
-                imageSource: modelData.recipe.image
+                source: modelData.recipe.image
+                titleWrapMode: Text.WordWrap
+                titleLevel: 2
             }
             contentItem: Label {
                 wrapMode: Text.WordWrap
