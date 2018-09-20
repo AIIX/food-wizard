@@ -8,7 +8,7 @@ import Mycroft 1.0 as Mycroft
 Mycroft.DelegateBase {
     property alias recipeTitle: title.text
     property alias recipeImage: img.source
-    property alias recipeCalories: contentCalorie.text
+    property int recipeCalories
     property alias recipeSource: contentSource.text
     property var recipeIngredients
     property var recipeDietType
@@ -26,157 +26,102 @@ Mycroft.DelegateBase {
         anchors.margins: Kirigami.Units.largeSpacing
 
         GridLayout {
-            Layout.fillHeight: true
+            id: grid
             Layout.fillWidth: true
-            columns: 2
-
+            columns: width > form.implicitWidth  + img.Layout.preferredWidth ? 2 : 1
+            columnSpacing: Kirigami.Units.largeSpacing
+            Kirigami.Heading {
+                id: title
+                level: 1
+                Layout.fillWidth: true
+                Layout.columnSpan: grid.columns
+                wrapMode: Text.WordWrap
+            }
             Image {
                 id: img
                 fillMode: Image.PreserveAspectCrop
-                Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-                Layout.preferredHeight: Kirigami.Units.gridUnit * 4
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 10
+                Layout.preferredHeight: Kirigami.Units.gridUnit * 10
             }
 
-            ColumnLayout {
+            Kirigami.FormLayout {
+                id: form
                 Layout.fillWidth: true
-                Kirigami.Heading {
-                    id: title
-                    level: 1
+                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+
+                Label {
+                    id: contentSource
+                    Kirigami.FormData.label: "Source:"
                     Layout.fillWidth: true
-                    //text: modelData.title
                     wrapMode: Text.WordWrap
+                    elide: Text.ElideRight
                 }
-
-
-                Row {
+                Label {
+                    id: contentCalorie
+                    text: Math.round(recipeCalories)
+                    Kirigami.FormData.label: "Calories:"
                     Layout.fillWidth: true
-                    spacing: Kirigami.Units.smallSpacing
-
-                    Label {
-                        id: contentSourceLabel
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Text.ElideRight
-                        text: "Source:"
-                    }
-
-                    Label {
-                        id: contentSource
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Text.ElideRight
-                    }
-
+                    wrapMode: Text.WordWrap
+                    elide: Text.ElideRight
                 }
-
-                Row {
+                ColumnLayout {
                     Layout.fillWidth: true
-                    spacing: Kirigami.Units.smallSpacing
-
-                    Label {
-                        id: contentCalorieLabel
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Text.ElideRight
-                        text: "Calories:"
-                    }
-
-                    Label {
-                        id: contentCalorie
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Text.ElideRight
-                    }
-
-                }
-
-                Row {
-                    Layout.fillWidth: true
-                    spacing: Kirigami.Units.smallSpacing
-
-                    Label {
-                        id: contentDietTypeLabel
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Text.ElideRight
-                        text: "Diet Type:"
-                    }
-
+                    Kirigami.FormData.label: "Diet Type:"
                     Repeater {
-                        id: contentDietTypeLv
                         model: recipeDietType.dietTags
-                        Label {
-                            Layout.columnSpan: 2
-                            Layout.fillWidth: true
-                            wrapMode: Text.WordWrap
-                            elide: Text.ElideRight
+                        delegate: Label {
                             text: modelData
-                        }
-                    }
-                }
-
-                Row {
-                    Layout.fillWidth: true
-                    spacing: Kirigami.Units.smallSpacing
-
-                    Label {
-                        id: contentHealthTagLabel
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Text.ElideRight
-                        text: "Health Tags:"
-                    }
-
-                    Repeater {
-                        id: contentHealthTag
-                        model: recipeHealthTag.healthTags
-                        Label {
-                            Layout.columnSpan: 2
                             Layout.fillWidth: true
                             wrapMode: Text.WordWrap
                             elide: Text.ElideRight
-                            text: recipeHealthTag.healthTags
                         }
                     }
                 }
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    visible: healthRepeater.count > 0
+                    Kirigami.FormData.label: "Health Tags:"
+                    Repeater {
+                        id: healthRepeater
+                        model: recipeDietType.healthTags
+                        delegate: Label {
+                            text: modelData
+                            Layout.fillWidth: true
+                            wrapMode: Text.WordWrap
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+            }
+            Item {
+                Layout.fillHeight: true
             }
         }
 
-        Item {
+        ColumnLayout {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            //Layout.columnSpan: 2
 
-            ColumnLayout{
+            Kirigami.Heading {
+                id: ingredientsLabel
+                level: 1
                 Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                text: "Ingredients:"
+            }
 
-                Kirigami.Heading {
-                    id: ingredientsLabel
-                    level: 1
+            Repeater {
+                id: ingredientsList
+                delegate: Label {
+                    Layout.columnSpan: 2
                     Layout.fillWidth: true
                     wrapMode: Text.WordWrap
-                    text: "Ingredients:"
+                    elide: Text.ElideRight
+                    text: "• " + modelData
                 }
-
-                ListView {
-                    id: ingredientsList
-                    Layout.fillWidth: true
-                    implicitHeight: 200
-                    delegate: Label {
-                        Layout.columnSpan: 2
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Text.ElideRight
-                        text: modelData
-                    }
-                    model: recipeIngredients.ingredients
-                }
+                model: recipeIngredients.ingredients
+            }
+            Item {
+                Layout.fillHeight: true
             }
         }
     }
