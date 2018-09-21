@@ -5,7 +5,7 @@ import org.kde.kirigami 2.4 as Kirigami
 
 import Mycroft 1.0 as Mycroft
 
-Mycroft.DelegateBase {
+Mycroft.PaginatedDelegate {
     property alias recipeTitle: title.text
     property alias recipeImage: img.source
     property int recipeCalories
@@ -21,10 +21,8 @@ Mycroft.DelegateBase {
         console.log(JSON.stringify(recipeIngredients))
     }
 
-    Mycroft.PaginationBase {
-        anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
-
+    //Page 1
+    Kirigami.ScrollablePage {
         GridLayout {
             id: grid
             Layout.fillWidth: true
@@ -97,7 +95,10 @@ Mycroft.DelegateBase {
                 Layout.fillHeight: true
             }
         }
+    }
 
+    //Page 2
+    Kirigami.ScrollablePage {
         ColumnLayout {
             Layout.fillWidth: true
 
