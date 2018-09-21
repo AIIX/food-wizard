@@ -6,6 +6,7 @@ import org.kde.kirigami 2.4 as Kirigami
 import Mycroft 1.0 as Mycroft
 
 Mycroft.PaginatedDelegate {
+    id: root
     property alias recipeTitle: title.text
     property alias recipeImage: img.source
     property int recipeCalories
@@ -26,18 +27,20 @@ Mycroft.PaginatedDelegate {
         GridLayout {
             id: grid
             Layout.fillWidth: true
-            columns: width > form.implicitWidth  + img.Layout.preferredWidth ? 2 : 1
+            columns: root.wideMode ? 2 : 1
             columnSpacing: Kirigami.Units.largeSpacing
             Kirigami.Heading {
                 id: title
+                Layout.alignment: root.wideMode ? Qt.AlignLeft : Qt.AlignHCenter
                 level: 1
-                Layout.fillWidth: true
+                //Layout.fillWidth: true
                 Layout.columnSpan: grid.columns
                 wrapMode: Text.WordWrap
             }
             Image {
                 id: img
                 fillMode: Image.PreserveAspectCrop
+                Layout.alignment: root.wideMode ? Qt.AlignLeft : Qt.AlignHCenter
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 10
                 Layout.preferredHeight: Kirigami.Units.gridUnit * 10
             }
@@ -45,6 +48,7 @@ Mycroft.PaginatedDelegate {
             Kirigami.FormLayout {
                 id: form
                 Layout.fillWidth: true
+                Layout.minimumWidth: implicitWidth
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
 
                 Label {
