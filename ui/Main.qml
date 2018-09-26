@@ -15,14 +15,13 @@ Mycroft.ScrollableDelegate {
 
     Kirigami.CardsGridView {
         id: uiGridView
-        width: delegate.width
         maximumColumnWidth: Kirigami.Units.gridUnit * 12
         cellWidth: width > maximumColumnWidth ? width / 2 : width / 2
         cellHeight: Kirigami.Units.gridUnit * 15
         model: recipeModel
-        delegate:
-            Kirigami.Card {
+        delegate: Kirigami.Card {
             id: card
+            showClickFeedback: true
             banner {
                 title: modelData.recipe.label
                 source: modelData.recipe.image
@@ -33,12 +32,9 @@ Mycroft.ScrollableDelegate {
                 wrapMode: Text.WordWrap
                 text: modelData.recipe.source
             }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    var sendReadRecipe = "read recipe " + modelData.recipe.label.replace(/[^A-Z0-9]+/ig, "");
-                    Mycroft.MycroftController.sendText(sendReadRecipe)
-                }
+            onClicked: {
+                var sendReadRecipe = "read recipe " + modelData.recipe.label.replace(/[^A-Z0-9]+/ig, "");
+                Mycroft.MycroftController.sendText(sendReadRecipe)
             }
         }
     }
