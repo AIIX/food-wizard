@@ -16,7 +16,6 @@ Mycroft.ScrollableDelegate {
     Kirigami.CardsGridView {
         id: uiGridView
         maximumColumnWidth: Kirigami.Units.gridUnit * 12
-        cellWidth: width > maximumColumnWidth ? width / 2 : width / 2
         cellHeight: Kirigami.Units.gridUnit * 15
         model: recipeModel
         delegate: Kirigami.Card {
