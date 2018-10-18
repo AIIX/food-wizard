@@ -38,6 +38,10 @@ Mycroft.ScrollableDelegate {
         model: recipeModel
         delegate: Kirigami.Card {
             id: card
+            //NOTE: force the thumbnail to be square to not make the image resize when loaded (also, saves memory)
+            banner.sourceSize.width: width
+            banner.sourceSize.height: width
+
             showClickFeedback: true
             banner {
                 title: modelData.recipe.label

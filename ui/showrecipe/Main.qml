@@ -47,11 +47,12 @@ Mycroft.PaginatedDelegate {
             Layout.fillWidth: true
             columns: root.wideMode ? 2 : 1
             columnSpacing: Kirigami.Units.largeSpacing
+            rowSpacing: Kirigami.Units.largeSpacing * 2
             Kirigami.Heading {
                 id: title
                 Layout.alignment: root.wideMode ? Qt.AlignLeft : Qt.AlignHCenter
                 level: 1
-                //Layout.fillWidth: true
+                Layout.fillWidth: true
                 Layout.columnSpan: grid.columns
                 wrapMode: Text.WordWrap
             }
@@ -72,7 +73,7 @@ Mycroft.PaginatedDelegate {
                 Label {
                     id: contentSource
                     Kirigami.FormData.label: "Source:"
-                    Layout.fillWidth: true
+                    //Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
                 }
@@ -80,25 +81,25 @@ Mycroft.PaginatedDelegate {
                     id: contentCalorie
                     text: Math.round(recipeCalories)
                     Kirigami.FormData.label: "Calories:"
-                    Layout.fillWidth: true
+                    //Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
                 }
                 ColumnLayout {
-                    Layout.fillWidth: true
+                    //Layout.fillWidth: true
                     Kirigami.FormData.label: "Diet Type:"
                     Repeater {
                         model: recipeDietType.dietTags
                         delegate: Label {
                             text: modelData
-                            Layout.fillWidth: true
+                            //Layout.fillWidth: true
                             wrapMode: Text.WordWrap
                             elide: Text.ElideRight
                         }
                     }
                 }
                 ColumnLayout {
-                    Layout.fillWidth: true
+                    //Layout.fillWidth: true
                     visible: healthRepeater.count > 0
                     Kirigami.FormData.label: "Health Tags:"
                     Repeater {
