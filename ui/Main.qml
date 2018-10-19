@@ -29,7 +29,7 @@ Mycroft.ScrollableDelegate {
     property var recipeModel: recipeBlob.hits
     property int uiWidth: parent.width
     backgroundImage: "https://source.unsplash.com/1920x1080/?+food"
-    graceTime: 30000
+    graceTime: uiGridView.count > 0 ? 30000 : 3000
 
     Kirigami.CardsGridView {
         id: uiGridView
@@ -58,5 +58,12 @@ Mycroft.ScrollableDelegate {
                 Mycroft.MycroftController.sendText(sendReadRecipe)
             }
         }
+    }
+
+    Kirigami.Heading {
+        text: "No recipes found"
+        parent: delegate
+        anchors.centerIn: parent
+        visible: uiGridView.count == 0
     }
 }
