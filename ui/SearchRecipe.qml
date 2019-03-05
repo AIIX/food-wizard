@@ -24,18 +24,15 @@ import org.kde.kirigami 2.4 as Kirigami
 import Mycroft 1.0 as Mycroft
 
 Mycroft.ScrollableDelegate {
-    id: delegate
-    property var recipeBlob: JSON.parse(recipeLayout.model)
-    property var recipeModel: recipeBlob.hits
+    id: root
     property int uiWidth: parent.width
-    backgroundImage: "https://source.unsplash.com/1920x1080/?+food"
-    graceTime: uiGridView.count > 0 ? 30000 : 3000
-
+    skillBackgroundSource: "https://source.unsplash.com/1920x1080/?+food"
+    
     Kirigami.CardsGridView {
         id: uiGridView
         maximumColumnWidth: Kirigami.Units.gridUnit * 12
         cellHeight: Kirigami.Units.gridUnit * 15
-        model: recipeModel
+        model: sessionData.recipeBlob.hits
         delegate: Kirigami.Card {
             id: card
             //NOTE: force the thumbnail to be square to not make the image resize when loaded (also, saves memory)
@@ -54,15 +51,15 @@ Mycroft.ScrollableDelegate {
                 text: modelData.recipe.source
             }
             onClicked: {
-                var sendReadRecipe = "read recipe " + modelData.recipe.label.replace(/[^A-Z0-9]+/ig, "");
-                Mycroft.MycroftController.sendText(sendReadRecipe)
+                var RecipeName = modelData.recipe.label.replace(/[^A-Z0-9]+/ig, "");
+                triggerEvent("foodwizard.showrecipe", {"recipe": RecipeName});
             }
         }
     }
 
     Kirigami.Heading {
         text: "No recipes found"
-        parent: delegate
+        parent: root
         anchors.centerIn: parent
         visible: uiGridView.count == 0
     }

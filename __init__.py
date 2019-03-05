@@ -30,6 +30,10 @@ class FoodWizardSkill(MycroftSkill):
         super(FoodWizardSkill, self).__init__(name="FoodWizardSkill")
         self.app_id = self.settings['app_id']
         self.app_key = self.settings['app_key']
+    
+    def initialize(self):
+    # Initialize...
+        self.gui.register_handler('foodwizard.showrecipe', self.handle_show_recipes)
 
     @intent_handler(IntentBuilder("RecipeByKeys").require("RecipeKeyword").build())
     def handle_search_recipe_by_keys_intent(self, message):
@@ -53,7 +57,8 @@ class FoodWizardSkill(MycroftSkill):
         globalObject = response.json()
         resultCount = len(globalObject['hits'])
         resultSpeak = "Found {0} recipes".format(resultCount)
-        self.enclosure.bus.emit(Message("metadata", {"type": "food-wizard", "recipeBlob": globalObject, "pageStay": True}))
+        self.gui["recipeBlob"] = globalObject
+        self.gui.show_page("SearchRecipe.qml")
         self.speak(resultSpeak)
                 
     @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
@@ -78,7 +83,42 @@ class FoodWizardSkill(MycroftSkill):
                 recipeIngredients = x['recipe']['ingredientLines']
                 recipeIngredientArray = {"ingredients": recipeIngredients}
                 recipeSource = x['recipe']['source']
-                self.enclosure.bus.emit(Message("metadata", {"type": "food-wizard/showrecipe", "recipeTitle": recipeTitle, "recipeHealthTag": recipeHealthTagArray, "recipeCalories": recipeCalories, "recipeImage": recipeImage, "recipeDietType": recipeDietTypeArray, "recipeIngredients": recipeIngredientArray, "recipeSource": recipeSource}))
+                self.gui["recipeTitle"] = recipeTitle
+                self.gui["recipeHealthTag"] = recipeHealthTagArray
+                self.gui["recipeCalories"] = recipeCalories
+                self.gui["recipeImage"] = recipeImage
+                self.gui["recipeDietType"] = recipeDietTypeArray
+                self.gui["recipeIngredients"] = recipeIngredientArray
+                self.gui["recipeSource"] = recipeSource
+                self.gui.show_page("RecipeDetail.qml")
+                
+    def handle_show_recipes(self, message):
+        """
+        Show Recipes By Keywords
+        """
+        foodTitle = message.data["recipe"].lower()
+        self.speak(foodTitle)
+        for x in globalObject['hits']:
+            mapLabel = x['recipe']['label'].replace("-", "").replace(" ", "").lower()
+            if mapLabel == foodTitle:
+                recipeTitle = x['recipe']['label']
+                recipeHealthTag = x['recipe']['healthLabels']
+                recipeHealthTagArray = {"healthTags": recipeHealthTag}
+                recipeCalories = x['recipe']['calories']
+                recipeImage = x['recipe']['image']
+                recipeDietType = x['recipe']['dietLabels']
+                recipeDietTypeArray = {"dietTags": recipeDietType}
+                recipeIngredients = x['recipe']['ingredientLines']
+                recipeIngredientArray = {"ingredients": recipeIngredients}
+                recipeSource = x['recipe']['source']
+                self.gui["recipeTitle"] = recipeTitle
+                self.gui["recipeHealthTag"] = recipeHealthTagArray
+                self.gui["recipeCalories"] = recipeCalories
+                self.gui["recipeImage"] = recipeImage
+                self.gui["recipeDietType"] = recipeDietTypeArray
+                self.gui["recipeIngredients"] = recipeIngredientArray
+                self.gui["recipeSource"] = recipeSource
+                self.gui.show_page("RecipeDetail.qml")
         
     def stop(self):
         """

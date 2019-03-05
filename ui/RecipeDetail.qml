@@ -23,25 +23,17 @@ import org.kde.kirigami 2.4 as Kirigami
 
 import Mycroft 1.0 as Mycroft
 
-Mycroft.PaginatedDelegate {
+Mycroft.Delegate {
     id: root
-    property alias recipeTitle: title.text
-    property alias recipeImage: img.source
-    property int recipeCalories
-    property alias recipeSource: contentSource.text
-    property var recipeIngredients
-    property var recipeDietType
-    property var recipeHealthTag
-    graceTime: 30000
-
-    backgroundImage: img.source
+    skillBackgroundSource: img.source
 
     Component.onCompleted: {
         console.log(JSON.stringify(recipeIngredients))
     }
-
-    //Page 1
-    Kirigami.ScrollablePage {
+    
+    ColumnLayout {
+        anchors.fill: parent
+    
         GridLayout {
             id: grid
             Layout.fillWidth: true
@@ -55,6 +47,7 @@ Mycroft.PaginatedDelegate {
                 Layout.fillWidth: true
                 Layout.columnSpan: grid.columns
                 wrapMode: Text.WordWrap
+                text: sessionData.recipeTitle
             }
             Image {
                 id: img
@@ -62,6 +55,7 @@ Mycroft.PaginatedDelegate {
                 Layout.alignment: root.wideMode ? Qt.AlignLeft : Qt.AlignHCenter
                 Layout.preferredWidth: Kirigami.Units.gridUnit * 10
                 Layout.preferredHeight: Kirigami.Units.gridUnit * 10
+                source: sessionData.recipeImage
             }
 
             Kirigami.FormLayout {
@@ -76,10 +70,11 @@ Mycroft.PaginatedDelegate {
                     //Layout.fillWidth: true
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
+                    text: sessionData.recipeSource
                 }
                 Label {
                     id: contentCalorie
-                    text: Math.round(recipeCalories)
+                    text: Math.round(sessionData.recipeCalories)
                     Kirigami.FormData.label: "Calories:"
                     //Layout.fillWidth: true
                     wrapMode: Text.WordWrap
@@ -89,7 +84,7 @@ Mycroft.PaginatedDelegate {
                     //Layout.fillWidth: true
                     Kirigami.FormData.label: "Diet Type:"
                     Repeater {
-                        model: recipeDietType.dietTags
+                        model: sessionData.recipeDietType.dietTags
                         delegate: Label {
                             text: modelData
                             //Layout.fillWidth: true
@@ -104,7 +99,7 @@ Mycroft.PaginatedDelegate {
                     Kirigami.FormData.label: "Health Tags:"
                     Repeater {
                         id: healthRepeater
-                        model: recipeDietType.healthTags
+                        model: sessionData.recipeDietType.healthTags
                         delegate: Label {
                             text: modelData
                             Layout.fillWidth: true
@@ -118,10 +113,7 @@ Mycroft.PaginatedDelegate {
                 Layout.fillHeight: true
             }
         }
-    }
 
-    //Page 2
-    Kirigami.ScrollablePage {
         ColumnLayout {
             Layout.fillWidth: true
 
@@ -142,7 +134,7 @@ Mycroft.PaginatedDelegate {
                     elide: Text.ElideRight
                     text: "• " + modelData
                 }
-                model: recipeIngredients.ingredients
+                model: sessionData.recipeIngredients.ingredients
             }
             Item {
                 Layout.fillHeight: true
