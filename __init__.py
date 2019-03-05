@@ -119,7 +119,15 @@ class FoodWizardSkill(MycroftSkill):
                 self.gui["recipeIngredients"] = recipeIngredientArray
                 self.gui["recipeSource"] = recipeSource
                 self.gui.show_page("RecipeDetail.qml")
-        
+                
+    @intent_handler(IntentBuilder("RecipesSlideShow").require("RecipesSlideshowKeyword").build())
+    def handle_experimental_slideshow_mode(self, message):
+        """
+        Show Recipes As SlideShow
+        """
+        self.gui["recipeBlob"] = globalObject
+        self.gui.show_page("SliderRecipes.qml")
+
     def stop(self):
         """
         Mycroft Stop Function
