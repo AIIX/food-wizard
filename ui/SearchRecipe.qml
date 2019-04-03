@@ -52,7 +52,7 @@ Mycroft.ScrollableDelegate {
             }
             onClicked: {
                 var RecipeName = modelData.recipe.label.replace(/[^A-Z0-9]+/ig, "");
-                triggerEvent("foodwizard.showrecipe", {"recipe": RecipeName});
+                triggerGuiEvent("foodwizard.showrecipe", {"recipe": RecipeName});
             }
         }
     }
