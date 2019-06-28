@@ -1,7 +1,4 @@
 {
-  "utterance": "search recipe",
-  "intent_type": "RecipeByKeys",
-  "intent": {
-    "RecipeKeyword": "containing"
-  }
+  "utterance": "show recipes slideshow",
+  "intent_type": "RecipesSlideShow"
 }

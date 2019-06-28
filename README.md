@@ -1,27 +1,32 @@
-## Food-Wizard
+# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/coffee.svg' card_color='#40515B' width='50' height='50' style='vertical-align:bottom'/> Food Wizard
 Get Popular Food & Cooking Recipes On The Go
 
-## Description
-Get popular recipes and how to cook directions based on combination of Ingredient keywords such as "Hey Mycroft, search for recipes with cheese, eggs and chicken"
+## About
+Get popular recipes and how to cook directions based on combination of Ingredient keywords
 
-#### Note: This Mycroft Skill Requires The Mycroft Plasmoid for Plasma Desktop / Plasma-Mobile To Display Results
 
-##### To-Do: 
-* Get More Recipes: Implement "Hey Mycroft Get More Recipes" 
-* Add Specific Search Categories like Soup, Fried, Semi-Fried, Roasted, Etc
+## Examples
+* "Hey Mycroft show recipes with apple and honey"
+* "Hey Mycroft show recipes with chicken, honey and lime"
+* "Hey Mycroft read recipe mexican chicken lime soup"
 
-## Examples 
-* "Hey Mycroft show recipes with chicken, honey and lemon"
+## Credits
+Aix (@aiix)
 
-### Example "Read Recipe Once Results Are Displayed:"
-##### Note: "Hey Mycroft read recipe %recipetitle" - Complete Displayed Recipe Title
-* "Hey Mycroft read recipe mexican chicken lime soup sola di"
+## Supported Devices 
+platform_mark2 platform_plasmoid 
 
-## Credits 
-Aix (aix.m@outlook.com)
+## Category
+**Information**
 
-## Require 
-platform_plasmoid 
+## Tags
+#Food
+#Recipes
+#GUI
+#Plasmoid
+#KDE
+#Ingredients
+#Cooking
 
-## Exclude 
-platform_mark1 platform_picroft
+## Requires
+Requires adding APP ID and Key from https://developer.edamam.com/edamam-recipe-api under Skill Settings.

@@ -1,7 +1,4 @@
 {
-  "utterance": "search recipes",
-  "intent_type": "RecipeByKeys",
-  "intent": {
-    "RecipeKeyword": "containing"
-  }
+  "utterance": "search recipes with chicken and honey",
+  "intent_type": "RecipeByKeys"
 }

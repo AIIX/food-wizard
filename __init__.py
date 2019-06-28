@@ -7,7 +7,6 @@ import subprocess
 import json
 import requests
 import unidecode
-import dbus
 from adapt.intent import IntentBuilder
 from os.path import join, dirname
 from string import Template
@@ -56,7 +55,7 @@ class FoodWizardSkill(MycroftSkill):
         global globalObject
         globalObject = response.json()
         resultCount = len(globalObject['hits'])
-        resultSpeak = "Found {0} recipes".format(resultCount)
+        resultSpeak = "I have found {0} recipes".format(resultCount)
         self.gui["recipeBlob"] = globalObject
         self.gui.show_page("SearchRecipe.qml")
         self.speak(resultSpeak)
@@ -69,7 +68,6 @@ class FoodWizardSkill(MycroftSkill):
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('ReadRecipeKeyword'), '')
         foodTitle = utterance.replace(" ", "").lower()
-        self.speak(foodTitle)
         for x in globalObject['hits']:
             mapLabel = x['recipe']['label'].replace("-", "").replace(" ", "").lower()
             if mapLabel == foodTitle:
@@ -97,7 +95,6 @@ class FoodWizardSkill(MycroftSkill):
         Show Recipes By Keywords
         """
         foodTitle = message.data["recipe"].lower()
-        self.speak(foodTitle)
         for x in globalObject['hits']:
             mapLabel = x['recipe']['label'].replace("-", "").replace(" ", "").lower()
             if mapLabel == foodTitle:
