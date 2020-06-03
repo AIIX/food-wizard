@@ -31,9 +31,17 @@ class FoodWizardSkill(MycroftSkill):
         self.app_key = self.settings['app_key']
     
     def initialize(self):
-    # Initialize...
+    # Initialize..
         self.gui.register_handler('foodwizard.showrecipe', self.handle_show_recipes)
+        self.add_event('food-wizard.aiix.home', self.showHome)
+        self.gui.register_handler('foodwizard.searchrecipe', self.handle_search_recipe_by_keys_intent)
 
+    def showHome(self):
+        """
+        Show A Homescreen
+        """
+        self.gui.show_page("foodHome.qml")
+        
     @intent_handler(IntentBuilder("RecipeByKeys").require("RecipeKeyword").build())
     def handle_search_recipe_by_keys_intent(self, message):
         """

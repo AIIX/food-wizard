@@ -1,0 +1,11 @@
+[Desktop Entry]
+X-DBUS-StartupType=None
+X-KDE-StartupNotify=false
+Version=1.0
+Terminal=false
+Type=Application
+Name=Food Wizard
+Exec=mycroft-gui-app --hideTextInput --skill=food-wizard.aiix.home
+Icon=food-wizard-skill
+Categories=VoiceApp
+StartupNotify=false
