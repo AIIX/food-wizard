@@ -26,6 +26,8 @@ import Mycroft 1.0 as Mycroft
 Mycroft.Delegate {
     id: root
     skillBackgroundSource: "https://source.unsplash.com/1920x1080/?+food"
+    property bool compactMode: parent.height >= 550 ? 0 : 1
+    fillWidth: compactMode ? 1 : 0
     
     Component.onCompleted: {
         txtFld.forceActiveFocus()
@@ -34,70 +36,87 @@ Mycroft.Delegate {
     Item {
         anchors.fill: parent
         
-        Kirigami.Heading {
-            id: heads
-            text: "Find Something To Cook With Custom Ingredients"
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        
-        Rectangle {
-            id: txtFld
-            anchors.top: heads.bottom
+        Item {
             width: parent.width
-            height: Kirigami.Units.gridUnit * 6
-            color: "transparent"
-            border.width: 2
-            radius: Kirigami.Units.gridUnit
-            border.color: txtFld.activeFocus ? Kirigami.Theme.linkColor : "transparent"
-            KeyNavigation.down: answerButton
-            focus: true
-            
-            Keys.onReturnPressed: { 
-                txtFldInternal.forceActiveFocus()
+            height: parent.height / 2
+            anchors.verticalCenter: compactMode ? undefined : parent.verticalCenter
+            anchors.top: compactMode ? parent.top : undefined
+    
+            Kirigami.Heading {
+                id: heads
+                text: "Find Something To Cook With Custom Ingredients"
+                width: parent.width
+                wrapMode: Text.WordWrap
+                anchors.top: parent.top
             }
             
-            TextField {
-                id: txtFldInternal
-                anchors.fill: parent
-                anchors.margins: Kirigami.Units.gridUnit
-                KeyNavigation.down: answerButton
-                placeholderText: "Add a list of ingredients e.g., orange, cheese, chicken, lime"
-                onAccepted: {
-                    triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
-                }
-                Keys.onReturnPressed: {
-                    triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
-                }
-            }
-        }
-        
-        Button {
-            id: answerButton
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: txtFld.bottom
-            anchors.margins: Kirigami.Units.gridUnit
-            height: Kirigami.Units.gridUnit * 4
-            KeyNavigation.up: txtFld
+            Item {
+                id: sep
+                anchors.top: heads.bottom
+                width: parent.width
+                height: Kirigami.Units.largeSpacing
+            } 
             
-            background: Rectangle {
-                color: answerButton.activeFocus ? "#4169E1" : "#4124AA" 
+            Rectangle {
+                id: txtFld
+                anchors.top: sep.bottom
+                width: parent.width
+                height: compactMode ? Kirigami.Units.gridUnit * 3 : Kirigami.Units.gridUnit * 6
+                color: "transparent"
+                border.width: 2
                 radius: Kirigami.Units.gridUnit
-            }
-            
-            contentItem: Item {
-                Kirigami.Heading {
-                    anchors.centerIn: parent
-                    text: "Get Food Recipes!"
+                border.color: txtFld.activeFocus ? Kirigami.Theme.linkColor : "transparent"
+                KeyNavigation.down: answerButton
+                focus: true
+                
+                Keys.onReturnPressed: { 
+                    txtFldInternal.forceActiveFocus()
+                }
+                
+                TextField {
+                    id: txtFldInternal
+                    anchors.fill: parent
+                    anchors.margins: Kirigami.Units.gridUnit
+                    KeyNavigation.down: answerButton
+                    placeholderText: "Add a list of ingredients e.g., orange, cheese, chicken, lime"
+                    onAccepted: {
+                        triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
+                    }
+                    Keys.onReturnPressed: {
+                        triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
+                    }
                 }
             }
             
-            onClicked: {
-                triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
-            }
-            
-            Keys.onReturnPressed: {
-                clicked()
+            Button {
+                id: answerButton
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: txtFld.bottom
+                anchors.margins: Kirigami.Units.gridUnit
+                height: !compactMode ? Kirigami.Units.gridUnit * 4 : Kirigami.Units.gridUnit * 2
+                KeyNavigation.up: txtFld
+                
+                background: Rectangle {
+                    color: answerButton.activeFocus ? "#4169E1" : "#4124AA" 
+                    radius: Kirigami.Units.gridUnit
+                }
+                
+                contentItem: Item {
+                    Kirigami.Heading {
+                        anchors.centerIn: parent
+                        text: "Get Food Recipes!"
+                        level: compactMode ? 3 : 1
+                    }
+                }
+                
+                onClicked: {
+                    triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
+                }
+                
+                Keys.onReturnPressed: {
+                    clicked()
+                }
             }
         }
     }

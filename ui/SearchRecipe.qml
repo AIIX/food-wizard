@@ -27,6 +27,8 @@ Mycroft.ScrollableDelegate {
     id: root
     property int uiWidth: parent.width
     skillBackgroundSource: "https://source.unsplash.com/1920x1080/?+food"
+    property bool compactMode: parent.height >= 550 ? 0 : 1
+    fillWidth: compactMode ? 1 : 0
     
     Component.onCompleted: {
         uiGridView.forceActiveFocus()

@@ -23,7 +23,7 @@ import org.kde.kirigami 2.10 as Kirigami
 
 import Mycroft 1.0 as Mycroft
 
-Mycroft.Delegate {
+Mycroft.ScrollableDelegate {
     id: root
     skillBackgroundSource: img.source
 
@@ -37,7 +37,10 @@ Mycroft.Delegate {
     }
     
     ColumnLayout {
-        anchors.fill: parent
+        id: ingdLay
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
     
         GridLayout {
             id: grid

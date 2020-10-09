@@ -1,0 +1,5 @@
+{
+    "android_icon": "/res/icon/foodwizz.png",
+    "android_name": "Food Wizard",
+    "android_handler": "food-wizard.aiix.home"
+}
