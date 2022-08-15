@@ -111,10 +111,9 @@ class FoodWizardSkill(MycroftSkill):
         """
         Show Recipes By Keywords
         """
-        foodTitle = message.data["recipe"].lower()
+        foodTitle = message.data["recipe"]
         for x in globalObject['hits']:
-            mapLabel = x['recipe']['label'].replace("-", "").replace(" ", "").lower()
-            if mapLabel == foodTitle:
+            if x['recipe']['url'] == foodTitle:
                 recipeTitle = x['recipe']['label']
                 recipeHealthTag = x['recipe']['healthLabels']
                 recipeHealthTagArray = {"healthTags": recipeHealthTag}
@@ -125,6 +124,7 @@ class FoodWizardSkill(MycroftSkill):
                 recipeIngredients = x['recipe']['ingredientLines']
                 recipeIngredientArray = {"ingredients": recipeIngredients}
                 recipeSource = x['recipe']['source']
+
                 self.gui["recipeTitle"] = recipeTitle
                 self.gui["recipeHealthTag"] = recipeHealthTagArray
                 self.gui["recipeCalories"] = recipeCalories
@@ -133,7 +133,7 @@ class FoodWizardSkill(MycroftSkill):
                 self.gui["recipeIngredients"] = recipeIngredientArray
                 self.gui["recipeSource"] = recipeSource
                 self.gui.show_page("RecipeDetail.qml")
-                
+
     @intent_handler(IntentBuilder("RecipesSlideShow").require("RecipesSlideshowKeyword").build())
     def handle_experimental_slideshow_mode(self, message):
         """

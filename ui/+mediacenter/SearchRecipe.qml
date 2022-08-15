@@ -63,8 +63,8 @@ Mycroft.ScrollableDelegate {
                 text: modelData.recipe.source
             }
             onClicked: {
-                var RecipeName = modelData.recipe.label.replace(/[^A-Z0-9]+/ig, "");
-                triggerGuiEvent("foodwizard.showrecipe", {"recipe": RecipeName});
+                var RecipeUrl = modelData.recipe.url;
+                triggerGuiEvent("foodwizard.showrecipe", {"recipe": RecipeUrl});
             }
             Keys.onReturnPressed: {
                 clicked()
