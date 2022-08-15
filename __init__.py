@@ -32,8 +32,8 @@ class FoodWizardSkill(MycroftSkill):
     
     def initialize(self):
     # Initialize..
-        self.app_id = self.settings['app_id']
-        self.app_key = self.settings['app_key']
+        self.app_id = self.settings.get('app_id', '')
+        self.app_key = self.settings.get('app_key', '')
         self.gui.register_handler('foodwizard.showrecipe', self.handle_show_recipes)
         self.add_event('food-wizard.aiix.home', self.showHome)
         self.gui.register_handler('foodwizard.searchrecipe', self.handle_search_recipe_by_keys_intent)
