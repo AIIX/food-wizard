@@ -46,28 +46,35 @@ class FoodWizardSkill(MycroftSkill):
     def handle_search_recipe_by_keys_intent(self, message):
         """
         Search Recipes By Keywords
-        """    
+        """
         utterance = message.data.get('utterance').lower()
         utterance = utterance.replace(message.data.get('RecipeKeyword'), '')
         searchString = utterance
-        
-        method = "GET"
-        url = "https://api.edamam.com/search"
+
         cat = re.split('\s+', searchString)
         if 'and' in cat:
             index = cat.index('and')
             del cat[index]
         cat = ','.join([x for x in cat if x])
-        data = "?q={0}&app_id={1}&app_key={2}&count=5".format(cat, self.app_id, self.app_key)
-        response = requests.request(method,url+data)
-        global globalObject
-        globalObject = response.json()
-        resultCount = len(globalObject['hits'])
-        resultSpeak = "I have found {0} recipes".format(resultCount)
-        self.gui["recipeBlob"] = globalObject
-        self.gui.show_page("SearchRecipe.qml")
-        self.speak(resultSpeak)
-                
+        results = None
+
+        if self.app_id and self.app_key:
+            results = self.use_direct_api(cat)
+        else:
+            results = self.use_ovos_api(cat)
+
+        if results:
+            global globalObject
+            globalObject = results
+            resultCount = len(globalObject['hits'])
+            resultSpeak = "I have found {0} recipes".format(resultCount)
+            self.gui["recipeBlob"] = globalObject
+            self.gui.show_page("SearchRecipe.qml")
+            self.speak(resultSpeak)
+        else:
+            failSpeak = "I was unable to process your recipe request"
+            self.speak(failSpeak)
+
     @intent_handler(IntentBuilder("ReadRecipeMethod").require("ReadRecipeKeyword").build())
     def handle_read_recipe_method_intent(self, message):
         """
@@ -132,6 +139,20 @@ class FoodWizardSkill(MycroftSkill):
         """
         self.gui["recipeBlob"] = globalObject
         self.gui.show_page("SliderRecipes.qml")
+
+    def use_direct_api(self, query):
+        method = "GET"
+        url = "https://api.edamam.com/search"
+        data = "?q={0}&app_id={1}&app_key={2}&count=5".format(query, self.app_id, self.app_key)
+        response = requests.request(method,url+data)
+        return response.json()
+
+    def use_ovos_api(self, query):
+        method = "GET"
+        url = "https://api.openvoiceos.com/recipes/search_recipe"
+        data = "?query={0}&count=5".format(query)
+        response = requests.request(method,url+data)
+        return response.json()
 
     def stop(self):
         """
