@@ -19,16 +19,32 @@
 import QtQuick.Layouts 1.4
 import QtQuick 2.8
 import QtQuick.Controls 2.2
-import org.kde.kirigami 2.10 as Kirigami
+import org.kde.kirigami 2.11 as Kirigami
 
 import Mycroft 1.0 as Mycroft
+import "code/helper.js" as HelperJS
 
 Mycroft.ScrollableDelegate {
     id: root
     property int uiWidth: parent.width
     skillBackgroundSource: "https://source.unsplash.com/1920x1080/?+food"
     property bool compactMode: parent.height >= 550 ? 0 : 1
-    fillWidth: compactMode ? 1 : 0
+    fillWidth: true
+
+    background: Item {
+        anchors.fill: parent
+        z: -1
+
+        Kirigami.Icon {
+           anchors.bottom: parent.bottom
+           anchors.bottomMargin: 16
+           anchors.right: parent.right
+           width: 60
+           height: 150
+           opacity: 0.85
+           source: HelperJS.isLight(Kirigami.Theme.backgroundColor) ? Qt.resolvedUrl("images/edamam-dark-vertical.svg") : Qt.resolvedUrl("images/edamam-light-vertical.svg")
+        }
+    }
     
     Component.onCompleted: {
         uiGridView.forceActiveFocus()
@@ -49,25 +65,30 @@ Mycroft.ScrollableDelegate {
         
         delegate: Kirigami.Card {
             id: card
-            //NOTE: force the thumbnail to be square to not make the image resize when loaded (also, saves memory)
+
             banner.sourceSize.width: width
             banner.sourceSize.height: width
 
             showClickFeedback: true
+
             banner {
                 title: modelData.recipe.label
                 source: modelData.recipe.image
                 titleWrapMode: Text.WordWrap
                 titleLevel: 2
             }
+
             contentItem: Label {
                 wrapMode: Text.WordWrap
                 text: modelData.recipe.source
+                color: Kirigami.Theme.textColor
             }
+
             onClicked: {
                 var RecipeUrl = modelData.recipe.url;
                 triggerGuiEvent("foodwizard.showrecipe", {"recipe": RecipeUrl});
             }
+
             Keys.onReturnPressed: {
                 clicked()
             }

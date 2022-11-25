@@ -17,9 +17,9 @@
  */
 
 import QtQuick.Layouts 1.4
-import QtQuick 2.8
-import QtQuick.Controls 2.2
-import org.kde.kirigami 2.10 as Kirigami
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import org.kde.kirigami 2.11 as Kirigami
 
 import Mycroft 1.0 as Mycroft
 
@@ -61,6 +61,7 @@ Mycroft.ScrollableDelegate {
             contentItem: Label {
                 wrapMode: Text.WordWrap
                 text: modelData.recipe.source
+                color: Kirigami.Theme.textColor
             }
             onClicked: {
                 var RecipeUrl = modelData.recipe.url;
