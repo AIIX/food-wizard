@@ -17,15 +17,25 @@
  */
 
 import QtQuick.Layouts 1.4
-import QtQuick 2.8
-import QtQuick.Controls 2.2
-import org.kde.kirigami 2.10 as Kirigami
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import org.kde.kirigami 2.11 as Kirigami
+import "../code/helper.js" as HelperJS
 
 import Mycroft 1.0 as Mycroft
 
 Mycroft.Delegate {
     id: root
     skillBackgroundSource: "https://source.unsplash.com/1920x1080/?+food"
+
+    Kirigami.Icon {
+        anchors.bottom: parent.bottom 
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: 150
+        height: 60
+        opacity: 0.7
+        source: HelperJS.isLight(Kirigami.Theme.backgroundColor) ? Qt.resolvedUrl("images/edamam-dark.svg") : Qt.resolvedUrl("images/edamam-light.svg")
+    }
     
     Component.onCompleted: {
         txtFld.forceActiveFocus()
@@ -34,10 +44,36 @@ Mycroft.Delegate {
     Item {
         anchors.fill: parent
         
-        Kirigami.Heading {
+        Rectangle {
             id: heads
-            text: "Find Something To Cook With Custom Ingredients"
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: horizontalMode ? Mycroft.Units.gridUnit * 3.5 : Mycroft.Units.gridUnit * 5
+            radius: 10
+            color: Qt.rgba(Kirigami.Theme.backgroundColor.r, Kirigami.Theme.backgroundColor.g, Kirigami.Theme.backgroundColor.b, 0.7)
+
+            Image {
+                id: headsImage
+                anchors.left: parent.left
+                anchors.leftMargin: Mycroft.Units.gridUnit / 2
+                anchors.verticalCenter: parent.verticalCenter
+                width: Mycroft.Units.gridUnit * 2
+                height: Mycroft.Units.gridUnit * 2
+                source: Qt.resolvedUrl("images/foodwizz.png")
+            }
+
+            Kirigami.Heading {
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                text: "Find Something To Cook With Custom Ingredients"
+                anchors.left: headsImage.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                anchors.margins: Mycroft.Units.gridUnit / 2
+                wrapMode: Text.WordWrap
+            }
         }
         
         Rectangle {
@@ -63,10 +99,10 @@ Mycroft.Delegate {
                 KeyNavigation.down: answerButton
                 placeholderText: "Add a list of ingredients e.g., orange, cheese, chicken, lime"
                 onAccepted: {
-                    triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
+                    triggerGuiEvent("foodwizard.searchrecipe", {"query": txtFldInternal.text})
                 }
                 Keys.onReturnPressed: {
-                    triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
+                    triggerGuiEvent("foodwizard.searchrecipe", {"query": txtFldInternal.text})
                 }
             }
         }
@@ -93,7 +129,7 @@ Mycroft.Delegate {
             }
             
             onClicked: {
-                triggerGuiEvent("foodwizard.searchrecipe", { "utterance": txtFldInternal.text, "RecipeKeyword": "recipe"})
+                triggerGuiEvent("foodwizard.searchrecipe", {"query": txtFldInternal.text})
             }
             
             Keys.onReturnPressed: {

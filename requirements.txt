@@ -1,1 +1,3 @@
 unidecode
+cloudscraper
+beautifulsoup4
